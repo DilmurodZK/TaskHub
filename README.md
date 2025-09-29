@@ -1,42 +1,42 @@
 # 🛠️ TaskHub
 
-**TaskHub** — jamoa va foydalanuvchilar uchun vazifa boshqarish (task/project) tizimi. Loyiha backend (Django + DRF) va Telegram bot orqali interfeysga ega.
+**TaskHub** — a task/project management system for teams and individual users. The project includes a backend (Django + DRF) and a Telegram bot interface.
 
 ---
 
-## 📌 Loyihaning qisqacha tavsifi
-- Backend: Django + Django REST Framework API (projects, tasks, accounts, auth).
-- Telegram bot: API orqali login, project va task CRUD amallarini command orqali bajaradi.
-- Loyihaning kodi `backend/` va `bot/` papkalarida joylashgan.
+## 📌 Project Overview
+- Backend: Django + Django REST Framework API (projects, tasks, accounts, authentication).
+- Telegram Bot: Provides login, project and task CRUD operations via commands through the API.
+- Source code is organized into two main folders: backend/ and bot/.
 
 ---
 
-## ✅ Asosiy imkoniyatlar
-- Foydalanuvchi ro‘yxatdan o‘tishi, JWT bilan autentifikatsiya (login/logout).
-- Role’lar: `admin`, `manager`, `user` — har biri uchun turli huquqlar.
-- Project va Task CRUD APIlari (DRF ViewSet + router).
-- Tasklarni filterlash (status, assigned_to, title).
-- Telegram bot orqali: login, projects ro‘yxati, tasks ro‘yxati, task yaratish, project yaratish, update va delete komandalar.
+## ✅ Key Features
+- User registration and authentication with JWT (login/logout).
+- Roles: admin, manager, user — each with different permissions.
+- Project and Task CRUD APIs (DRF ViewSet + router).
+- Task filtering (by status, assigned_to, title).
+- Telegram bot commands: login, list projects, list tasks, create/update/delete projects and tasks.
 
 ---
 
-## 🧾 Texnologiyalar
+## 🧾 Technologies
 - Python 3.x
 - Django
 - Django REST Framework
-- djangorestframework-simplejwt (JWT)
+- djangorestframework-simplejwt (JWT authentication)
 - django-filter
-- python-telegram-bot (yoki PyTelegramBotAPI — bot kodida ishlatilgan kutubxona)
-- PostgreSQL (production uchun tavsiya etiladi)
-- `requirements.txt` fayli repoda mavjud.
+- python-telegram-bot (or PyTelegramBotAPI)
+- PostgreSQL (recommended for production)
+- requirements.txt file included in the rep
 
 ---
 
-## 📁 Loyiha tuzilmasi (muqaddima)
+## 📁 Project Structure
 ```
 TaskHub/
 ├─ backend/        # Django project (settings, apps: accounts, projects, api ...)
-├─ bot/            # Telegram bot kodi
+├─ bot/            # Telegram bot code
 ├─ .gitignore
 ├─ requirements.txt
 └─ README.md
@@ -44,30 +44,30 @@ TaskHub/
 
 ---
 
-## ⚙️ Tizimni mahalliy ishga tushirish (minimal)
-> Quyidagi ko‘rsatmalar `backend/` papkasi ichida bajarilishi nazarda tutilgan.
+## ⚙️ Local Setup (minimal)
+> Inside the backend/ folder:
 
-1. Repozitoriyani klonlash:
+1. Clone the repository:
 ```bash
 git clone https://github.com/DilmurodZK/TaskHub.git
 cd TaskHub/backend
 ```
 
-2. Virtual muhit yaratish va faollashtirish:
+2. Create and activate a virtual environment:
 ```bash
 python -m venv venv
 source venv/bin/activate   # Linux/Mac
 venv\Scripts\activate      # Windows
 ```
 
-3. Kutubxonalarni o‘rnatish:
+3. Install dependencies:
 ```bash
 pip install -r ../requirements.txt
 # yoki agar requirements.txt backend ichida bo'lsa:
 # pip install -r requirements.txt
 ```
 
-4. `.env` yoki `local_settings.py` yarating va quyidagilarni qo‘shing (hech qachon ularni repo-ga push qilmang):
+4. - Create .env or local_settings.py with:
 ```
 SECRET_KEY=...
 DEBUG=True
@@ -78,54 +78,52 @@ DB_HOST=...
 BOT_TOKEN=...
 ```
 
-5. Migratsiyalarni bajarish:
+5. - Run migrations:
 ```bash
 python manage.py makemigrations
 python manage.py migrate
 ```
 
-6. Superuser yaratish:
+6. Create a superuser:
 ```bash
 python manage.py createsuperuser
 ```
 
-7. Serverni ishga tushirish:
+7. Start the server
 ```bash
 python manage.py runserver
 ```
 
-8. Botni ishga tushirish (alohida terminalda):
+8. Run the bot (in a separate terminal):
 ```bash
 cd ../bot
 python bot.py
 ```
-> Eslatma: bot ishlashi uchun Django server (`runserver`) yoki deployed API orqali mavjud bo‘lishi kerak — bot API ga murojaat qiladi.
+⚠️ Note: The bot requires the Django server (runserver) or a deployed API to be running, since it communicates with the API.
 
 ---
 
-## 🔌 API misollar (DRF router orqali)
-- `GET  /api/projects/` — barcha projectlar
-- `POST /api/projects/` — yangi project yaratish (manager/admin)
-- `GET  /api/projects/<id>/` — project detali
-- `GET  /api/tasks/` — tasklar (filter: `?status=done`, `?assigned_to=2`)
-- `POST /api/tasks/` — task yaratish (required: `title`, `project`, ...)
-
-(Exact endpoint pathlar sizning `api/urls.py` ga mos).
+## 🔌 API Examples (via DRF Router)
+- GET /api/projects/ — list all projects
+- POST /api/projects/ — create a new project (manager/admin only)
+- GET /api/projects/<id>/ — project details
+- GET /api/tasks/ — list tasks (filters: ?status=done, ?assigned_to=2)
+- POST /api/tasks/ — create a new task (required: title, project, …)
 
 ---
 
-## 🤖 Bot komandalar (misol)
-Bot command-based ishlaydi. `/help` orqali komandalarning shakli bot ichida ko‘rsatiladi. Asosiylari:
+## 🤖 Bot Commands (Examples)
+The bot is command-based. Use /help inside the bot to see all commands. Main ones include:
 ```
 /login <username> <password>
 /logout
 
-/projects                  # barcha projectlar
-/projects <id>             # project detali
+/projects                  # list all projects
+/projects <id>             # project detail
 /newproject name="..." description="..."
 
-/tasks                    # barcha tasklar
-/tasks <id>               # task detali
+/tasks                    # list all tasks
+/tasks <id>               # task detail
 /newtask title="..." description="..." project=<project_id> assigned_to=<user_id>
 /updatetask id=... title="..." description="..."
 /deltask id
