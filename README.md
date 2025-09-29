@@ -63,8 +63,7 @@ venv\Scripts\activate      # Windows
 3. Install dependencies:
 ```bash
 pip install -r ../requirements.txt
-# yoki agar requirements.txt backend ichida bo'lsa:
-# pip install -r requirements.txt
+# or pip install -r requirements.txt
 ```
 
 4. - Create .env or local_settings.py with:
